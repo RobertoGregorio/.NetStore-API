@@ -17,42 +17,44 @@ namespace WebApi.Controllers
     [ServiceFilter(typeof(LogAsyncFilter))]
     public class ProductsController : ControllerBase
     {
-        private readonly ProductRepository _productRepository;
-        
+        private readonly UnitOfWork _unitOfWork;
+
         private readonly ILogger<ProductsController> _logger;
 
-        public ProductsController(ILogger<ProductsController> logger, ProductRepository productRepository)
+        public ProductsController(ILogger<ProductsController> logger, UnitOfWork unitOfWork)
         {
             _logger = logger;
-            _productRepository = productRepository;
+            _unitOfWork = unitOfWork;
         }
 
         [Route("GetProducts")]
         [HttpGet]
-        public ActionResult<IEnumerable<Product>> GetProducts()
+        public ActionResult<IEnumerable<Product>> GetProducts([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 6)
         {
             try
             {
-                IEnumerable<Product> products = _productRepository.Get();
+                IEnumerable<Product> products = _unitOfWork.productRepository.GetProductsPaginated(pageNumber, pageSize);
 
                 return Ok(products);
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogInformation(ex,ex.Message,ex.StackTrace);
+
                 return NotFound();
             }
         }
 
         [Route("InsertProduct")]
         [HttpPost]
-        public ActionResult<Product> InsertProduct([FromBody] JsonInsertProduct jsonInsertProduct, [FromServices] CategoryRepository _categoryRepository)
+        public ActionResult<Product> InsertProduct([FromBody] JsonInsertProduct jsonInsertProduct)
         {
             try
             {
-                Category category = _categoryRepository.GetCategoryByCode(jsonInsertProduct.CategoryCode);
+                Category category = _unitOfWork.categoryRepository.GetCategoryByCode(jsonInsertProduct.CategoryCode);
 
                 if (category == null)
-                    return StatusCode(StatusCodes.Status404NotFound, "Categoria não encontrada");
+                    return NotFound("Categoria não encontrada");
 
                 Product product = new Product()
                 {
@@ -62,13 +64,16 @@ namespace WebApi.Controllers
                     ImageUrl = jsonInsertProduct.ImageUrl
                 };
 
-                _productRepository.Insert(product);
+                _unitOfWork.productRepository.Insert(product);
 
-                return Created($@"api/Products/GetProductById/{product.Id}", product);
+                _unitOfWork.Commit();
+
+                return new CreatedAtRouteResult("GetProductById", new { id = product.Id }, product);
             }
             catch (Exception ex)
             {
                 _logger.LogInformation(ex, ex.Message, ex.StackTrace);
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -79,13 +84,16 @@ namespace WebApi.Controllers
         {
             try
             {
-                Product product = _productRepository.GetById(product => product.Id == Id);
+                Product product = _unitOfWork.productRepository.GetById(product => product.Id == Id);
+
+                if (product == null)
+                    return NotFound("Produto não econtrado");
 
                 return Ok(product);
             }
-            catch
+            catch (Exception ex)
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }

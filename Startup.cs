@@ -35,13 +35,14 @@ namespace WebApi
 
             services.AddScoped<LogAsyncFilter>();
 
-            services.AddScoped<ProductRepository>();
-            services.AddScoped<CategoryRepository>();
+            // services.AddScoped<ProductRepository>();
+            // services.AddScoped<CategoryRepository>();
 
             services.AddDbContext<DataContext>();
 
-            services.AddCors();
+            services.AddScoped<UnitOfWork>();
 
+            services.AddCors();
             
 
             services.AddSwaggerGen(c =>

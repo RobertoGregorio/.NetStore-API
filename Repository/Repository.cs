@@ -38,11 +38,15 @@ namespace Repository
         public void Insert(T baseEntity)
         {
             _dataContext.Set<T>().Add(baseEntity);
+
+            _dataContext.SaveChanges();
         }
 
         public void Update(T baseEntity)
         {
             _dataContext.Set<T>().Update(baseEntity);
+
+            _dataContext.SaveChanges();
         }
     }
 }

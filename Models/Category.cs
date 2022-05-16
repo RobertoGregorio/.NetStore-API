@@ -15,7 +15,7 @@ namespace WebApi.Models
         public long Id { get; set; }
 
         [Required]
-        public CategoryType Type { get; set; }
+        public CategoryType? Type { get; set; }
 
         [Required]
         public string Description { get; set; }

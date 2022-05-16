@@ -19,6 +19,14 @@ namespace WebApi.Repository
         public IEnumerable<Product> GetProductByPrice()
         {
             var products = Get().OrderBy(product => product.Price);
+
+            return products;
+        }
+
+        public IEnumerable<Product> GetProductsPaginated(int pageNumber, int pageSize)
+        {
+            var products = Get().ToList().Skip((pageNumber - 1)*pageSize).Take(pageSize);
+
             return products;
         }
     }

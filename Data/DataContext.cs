@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using WebApi.Models;
 
 namespace WebApi.Data
 {
     public class DataContext : DbContext
     {
+        private readonly IConfiguration _configuration;
+        
+        public DataContext(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         protected DbSet<Product> Products { get; set; }
 
         protected DbSet<Ordering> Orderings { get; set; }
@@ -21,7 +29,7 @@ namespace WebApi.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"#");
+            optionsBuilder.UseSqlServer(_configuration.GetSection("ConnectionString").GetSection("DefaultConnection").Value);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
