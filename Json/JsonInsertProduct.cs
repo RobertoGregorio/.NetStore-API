@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace WebApi.Json
+namespace Api.Json
 {
-    public class JsonInsertProduct
+    public class InsertProductDTO
     {
         public string Name { get; set; }
         

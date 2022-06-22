@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace WebApi.Annotations
+namespace Api.Annotations
 {
 
     public class LogSyncFilter : IActionFilter

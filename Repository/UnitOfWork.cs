@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Interfaces;
+using Api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebApi.Data;
-using WebApi.Interfaces;
+using Api.Data;
 
-namespace WebApi.Repository
+namespace Api.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
         private IProductRepository _productRepository;
+
         private ICategoryRepository _categoryRepository;
+
         private DataContext _dbContext;
 
         public UnitOfWork([FromServices] DataContext dbContext)
@@ -31,7 +27,6 @@ namespace WebApi.Repository
         { 
               get => _categoryRepository ?? new CategoryRepository(_dbContext);
         }
-
 
         public void Commit()
         {

@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WebApi.Data;
+using Api.Data;
 
-namespace WebApi.Migrations
+namespace Api.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20220417031835_Migration_03")]

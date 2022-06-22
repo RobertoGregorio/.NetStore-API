@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Interfaces;
-
-namespace WebApi.Interfaces
+namespace Api.Interfaces
 {
     public interface IUnitOfWork
     {

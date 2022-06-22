@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApi.Interfaces;
+using Api.Interfaces;
 
-namespace WebApi.Models
+namespace Api.Domain
 {
     public class Stock : IBaseEntity
     {

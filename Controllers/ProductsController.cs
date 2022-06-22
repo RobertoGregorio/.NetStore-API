@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebApi.Annotations;
-using WebApi.Json;
-using WebApi.Models;
-using WebApi.Repository;
+using Api.Annotations;
+using Api.Json;
+using Api.Repository;
+using Api.Domain;
+using AutoMapper;
+using Api.DTO;
+using Api.DTO.Mapping;
 
-namespace WebApi.Controllers
+namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -21,25 +22,30 @@ namespace WebApi.Controllers
 
         private readonly ILogger<ProductsController> _logger;
 
-        public ProductsController(ILogger<ProductsController> logger, UnitOfWork unitOfWork)
+        private readonly MappingTool _mappingTool;
+
+        public ProductsController(ILogger<ProductsController> logger, UnitOfWork unitOfWork, MappingTool mappingTool)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
+            _mappingTool = mappingTool;
         }
 
         [Route("GetProducts")]
         [HttpGet]
-        public ActionResult<IEnumerable<Product>> GetProducts([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 6)
+        public ActionResult<IEnumerable<ProductDTO>> GetProducts([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 6)
         {
             try
             {
                 IEnumerable<Product> products = _unitOfWork.productRepository.GetProductsPaginated(pageNumber, pageSize);
 
-                return Ok(products);
+                IEnumerable<ProductDTO> productsDTOList = _mappingTool.AutomaticMapper<Product, ProductDTO>(products);
+
+                return Ok(productsDTOList);
             }
             catch (Exception ex)
             {
-                _logger.LogInformation(ex,ex.Message,ex.StackTrace);
+                _logger.LogInformation(ex, ex.Message, ex.StackTrace);
 
                 return NotFound();
             }
@@ -47,7 +53,7 @@ namespace WebApi.Controllers
 
         [Route("InsertProduct")]
         [HttpPost]
-        public ActionResult<Product> InsertProduct([FromBody] JsonInsertProduct jsonInsertProduct)
+        public ActionResult<Product> InsertProduct([FromBody] InsertProductDTO jsonInsertProduct)
         {
             try
             {
@@ -68,11 +74,11 @@ namespace WebApi.Controllers
 
                 _unitOfWork.Commit();
 
-                return new CreatedAtRouteResult("GetProductById", new { id = product.Id }, product);
+                return Ok(new { product = product, rel = $"https://localhost:5001/api/Products/GetProductById?Id={product.Id}" });
             }
             catch (Exception ex)
             {
-                _logger.LogInformation(ex, ex.Message, ex.StackTrace);
+                _logger.LogInformation(ex, ex.Message);
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
@@ -80,7 +86,7 @@ namespace WebApi.Controllers
 
         [Route("GetProductById")]
         [HttpGet]
-        public ActionResult<Product> GetProductById([FromQuery] long Id)
+        public ActionResult<ProductDTO> GetProductById([FromQuery] long Id)
         {
             try
             {
@@ -89,7 +95,9 @@ namespace WebApi.Controllers
                 if (product == null)
                     return NotFound("Produto não econtrado");
 
-                return Ok(product);
+                var productDTO = _mappingTool.AutomaticMapper<Product, ProductDTO>(product);
+
+                return Ok(productDTO);
             }
             catch (Exception ex)
             {

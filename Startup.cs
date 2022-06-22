@@ -13,11 +13,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using WebApi.Annotations;
-using WebApi.Data;
-using WebApi.Repository;
+using Api.Annotations;
+using Api.Data;
+using Api.Repository;
+using Api.DTO.Mapping;
 
-namespace WebApi
+namespace Api
 {
     public class Startup
     {
@@ -41,6 +42,8 @@ namespace WebApi
             services.AddDbContext<DataContext>();
 
             services.AddScoped<UnitOfWork>();
+
+            services.AddSingleton<MappingTool>();
 
             services.AddCors();
             

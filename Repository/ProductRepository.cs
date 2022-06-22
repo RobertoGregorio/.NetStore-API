@@ -1,14 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Interfaces;
+using Api.Interfaces;
 using Repository;
-using WebApi.Data;
-using WebApi.Interfaces;
-using WebApi.Models;
+using Api.Data;
+using Api.Domain;
 
-namespace WebApi.Repository
+namespace Api.Repository
 {
     public class ProductRepository : Repository<Product>, IProductRepository
     {

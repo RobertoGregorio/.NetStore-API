@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace WebApi.Migrations
+namespace Api.Migrations
 {
     public partial class Migration_03 : Migration
     {

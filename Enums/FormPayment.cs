@@ -1,4 +1,4 @@
-namespace WebApi.Enums
+namespace Api.Enums
 {
     public enum FormPayment
     {

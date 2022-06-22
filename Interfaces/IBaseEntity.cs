@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApi.Interfaces
+namespace Api.Interfaces
 {
     public interface IBaseEntity
     {

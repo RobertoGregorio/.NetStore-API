@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
-namespace WebApi.Annotations
+namespace Api.Annotations
 {
     public class LogAsyncFilter : IAsyncActionFilter
     {

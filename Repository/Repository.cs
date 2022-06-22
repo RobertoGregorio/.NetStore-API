@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using WebApi.Data;
-using WebApi.Interfaces;
+using Api.Data;
+using Api.Interfaces;
 
 namespace Repository
 {

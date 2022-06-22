@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using WebApi.Models;
+using Api.Domain;
 
-namespace WebApi.Data
+namespace Api.Data
 {
     public class DataContext : DbContext
     {

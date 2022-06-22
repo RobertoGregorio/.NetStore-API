@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApi.Interfaces;
-using WebApi.Models;
+using Api.Interfaces;
+using Api.Domain;
 
-namespace Interfaces
+namespace Api.Interfaces
 {
     public interface IProductRepository : IRepository<Product>
     {

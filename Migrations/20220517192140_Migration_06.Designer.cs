@@ -2,14 +2,16 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Api.Data;
 
 namespace Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220501003953_Migration_05")]
-    partial class Migration_05
+    [Migration("20220517192140_Migration_06")]
+    partial class Migration_06
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -166,7 +168,6 @@ namespace Api.Migrations
 
                     b.Navigation("Product");
                 });
-
 #pragma warning restore 612, 618
         }
     }
