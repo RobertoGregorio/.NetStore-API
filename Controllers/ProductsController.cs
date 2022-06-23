@@ -10,15 +10,16 @@ using Api.Domain;
 using AutoMapper;
 using Api.DTO;
 using Api.DTO.Mapping;
+using Api.Interfaces;
 
 namespace Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("v1/api/[controller]")]
     [ServiceFilter(typeof(LogAsyncFilter))]
     public class ProductsController : ControllerBase
     {
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         private readonly ILogger<ProductsController> _logger;
 
@@ -33,11 +34,14 @@ namespace Api.Controllers
 
         [Route("GetProducts")]
         [HttpGet]
-        public ActionResult<IEnumerable<ProductDTO>> GetProducts([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 6)
+        public ActionResult<IEnumerable<ProductDTO>> GetProducts(int pageNumber = 1, int pageSize = 6)
         {
             try
             {
                 IEnumerable<Product> products = _unitOfWork.productRepository.GetProductsPaginated(pageNumber, pageSize);
+
+                if(products == null)
+                return NoContent();
 
                 IEnumerable<ProductDTO> productsDTOList = _mappingTool.AutomaticMapper<Product, ProductDTO>(products);
 
@@ -45,7 +49,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogInformation(ex, ex.Message, ex.StackTrace);
+                _logger.LogError(ex, ex.Message, ex.StackTrace);
 
                 return NotFound();
             }
@@ -78,7 +82,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogInformation(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
@@ -101,6 +105,8 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }

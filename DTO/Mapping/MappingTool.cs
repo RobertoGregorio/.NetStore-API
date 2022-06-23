@@ -18,14 +18,13 @@ namespace Api.DTO.Mapping
 
             PropertyInfo[] properties = contextMapper.GetType().GetProperties();
 
-
             foreach (PropertyInfo prop in properties)
             {
                 try
                 {
+
                     if (mapperResult.GetType().GetProperty(prop.Name) == null)
                         continue;
-
 
                     mapperResult.GetType().GetProperty(prop.Name).SetValue(mapperResult, prop.GetValue(contextMapper));
                 }
@@ -48,13 +47,13 @@ namespace Api.DTO.Mapping
             if (contextMapperList == null)
                 return mapperResult;
 
-            PropertyInfo[] properties = (Activator.CreateInstance(typeof(T)).GetType().GetProperties());
-
+            PropertyInfo[] properties =  Activator.CreateInstance<T>().GetType().GetProperties();
+            
             foreach (T iten in contextMapperList)
             {
                 try
                 {
-                    E obj = (E)Activator.CreateInstance(typeof(E));
+                    E obj = Activator.CreateInstance<E>();
 
                     foreach (PropertyInfo prop in properties)
                     {
