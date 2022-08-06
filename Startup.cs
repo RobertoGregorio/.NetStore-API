@@ -14,9 +14,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Api.Annotations;
-using Api.Data;
-using Api.Repository;
+
 using Api.DTO.Mapping;
+using Application.Data.Context;
 
 namespace Api
 {
@@ -39,9 +39,9 @@ namespace Api
             // services.AddScoped<ProductRepository>();
             // services.AddScoped<CategoryRepository>();
 
-            services.AddDbContext<DataContext>();
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetSection("ConnectionString").GetSection("DefaultConnection").Value));
 
-            services.AddScoped<UnitOfWork>();
+            services.AddScoped<Application.Data.Repositories.UnitOfWork>();
 
             services.AddSingleton<MappingTool>();
 

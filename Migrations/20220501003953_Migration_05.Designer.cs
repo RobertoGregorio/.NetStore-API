@@ -3,7 +3,8 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Api.Data;
+
+using Application.Data.Context;
 
 namespace Api.Migrations
 {

@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Api.Annotations;
 using Api.Json;
-using Api.Repository;
-using Api.Domain;
-using AutoMapper;
+
 using Api.DTO;
 using Api.DTO.Mapping;
-using Api.Interfaces;
+
+using Application.Domain.Entities;
+using Application.Data.Interfaces;
+using Application.Data.Repositories;
 
 namespace Api.Controllers
 {
