@@ -20,23 +20,23 @@ namespace Api
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    var settings = config.Build();
-                    Serilog.Log.Logger = new LoggerConfiguration()
-                        .Enrich.FromLogContext()
-                        .WriteTo.Elasticsearch(
-                            options:
-                                new ElasticsearchSinkOptions(
-                                    new Uri(settings["Elasticsearch:Uri"]))
-                                {
-                                    AutoRegisterTemplate = true,
-                                    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
-                                    IndexFormat = "apiproducts-{0:yyyy.MM}"
-                                })
-                        .WriteTo.Console()
-                        .CreateLogger();
-                })
+            // .ConfigureAppConfiguration((hostingContext, config) =>
+                // {
+                //     var settings = config.Build();
+                //     Serilog.Log.Logger = new LoggerConfiguration()
+                //         .Enrich.FromLogContext()
+                //         .WriteTo.Elasticsearch(
+                //             options:
+                //                 new ElasticsearchSinkOptions(
+                //                     new Uri(settings["Elasticsearch:Uri"]))
+                //                 {
+                //                     AutoRegisterTemplate = true,
+                //                     AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                //                     IndexFormat = "apiproducts-{0:yyyy.MM}"
+                //                 })
+                //         .WriteTo.Console()
+                //         .CreateLogger();
+                // })
                 .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

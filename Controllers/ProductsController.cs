@@ -17,7 +17,7 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("v1/api/[controller]")]
-    [ServiceFilter(typeof(LogAsyncFilter))]
+    [ServiceFilter(typeof(PublisherLogAsync))]
     public class ProductsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;

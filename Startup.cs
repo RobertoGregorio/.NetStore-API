@@ -34,12 +34,10 @@ namespace Api
         {
             services.AddControllers();
 
-            services.AddScoped<LogAsyncFilter>();
+            services.AddScoped<PublisherLogAsync>();
 
-            // services.AddScoped<ProductRepository>();
-            // services.AddScoped<CategoryRepository>();
 
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetSection("ConnectionString").GetSection("DefaultConnection").Value));
+            services.AddDbContext<DataContext>();
 
             services.AddScoped<Application.Data.Repositories.UnitOfWork>();
 
